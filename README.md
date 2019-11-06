@@ -92,7 +92,7 @@ The arguments must have the next format:
 arg_name (arg_type)[Optional]: Description. Accepted formats: format1, format2, format3.
 ```
 
-The *argument type* must be between parenthesis. Argument types: str, dic.
+The *argument type* must be between parenthesis. Argument types: *str* (string), *dic* (dictionary).
 
 If the argument is optional, the **[Optional]** expression must be right next the *argument type*.
 
@@ -108,7 +108,7 @@ The properties must have the next format:
 
 The *property name* must be a list item in markdown bold (between double asterisk).
 
-The *property type* must be between parenthesis. Property types: str, dic, int, float, bool.
+The *property type* must be between parenthesis. Property types: *str* (string), *dic* (dictionary), *int* (integer), *float*, *bool* (boolean).
 
 The *property default* must be between parenthesis.
 
@@ -124,7 +124,7 @@ The parameters must have the next format:
 
 The *parameter name* must be a list item in markdown bold (between double asterisk).
 
-The *parameter type* must be between parenthesis. Parameter types: str, dic, int, float, bool.
+The *parameter type* must be between parenthesis. Parameter types: *str* (string), *dic* (dictionary), *int* (integer), *float*, *bool* (boolean).
 
 The *parameter default* must be between parenthesis.
 
