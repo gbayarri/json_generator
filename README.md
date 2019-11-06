@@ -30,9 +30,9 @@ The structure of a biobb package must be:
 
 * biobb_package
 	* biobb_package
-		* **__init__.py**
+		* **\_\_init\_\_.py**
 		* block
-			* **__init__.py**
+			* **\_\_init\_\_.py**
 			* module 1
 			* module 2
 		* docs
@@ -45,23 +45,23 @@ The structure of a biobb package must be:
 	* setup.py
 	* Singularity.latest
 
-### __init__.py files
+### \_\_init\_\_.py files
 
-The *__init__.py* file in the first level must have the following structure:
+The *\_\_init\_\_.py* file in the first level must have the following structure:
 
 ```Python
 name = "biobb_package"
 __all__ = ["block1", "block2", ..., "blockn"]
 ```
 
-The *__init__.py* file in the second level must have the following structure:
+The *\_\_init\_\_.py* file in the second level must have the following structure:
 
 ```Python
 name = "block1"
 __all__ = ["module1", "module2", ..., "modulen"]
 ```
 
-In the *__all__* list we have to put all the modules for which we want to generate a JSON schema.
+In the *\_\_all\_\_* list we have to put all the modules for which we want to generate a JSON schema.
 
 ### json_schemas folder
 
@@ -72,16 +72,16 @@ The *json_schemas* folder must exist before executing the script. The file *biob
 All the docs must be written in correct markdown language and they must be properly indented. Example of documentation:
 
 ```Markdown
-	Description of the module.
+Description of the module.
 
-	Args:
-        arg_name1 (arg_type): Description for argument 1. Accepted formats: format1, format2, format3.
-        arg_name2 (arg_type)[Optional]: Description for argument 2. Accepted formats: format1, format2.
-        properties (dic):
-            * **property1** (*prop_type*) - (property1_default) Property 1 description.
-            * **property2** (*prop_type*) - (property2_default) Property 2 description. Values: value1, value2, value3.
-            * **property3** (*dic*) - (None) Property 3 description.
-                * **parameter1** (*param_type*) - (parameter1_default) Parameter 1 description. Values: value1, value2, value3.
+Args:
+    arg_name1 (arg_type): Description for argument 1. Accepted formats: format1, format2, format3.
+    arg_name2 (arg_type)[Optional]: Description for argument 2. Accepted formats: format1, format2.
+    properties (dic):
+        * **property1** (*prop_type*) - (property1_default) Property 1 description.
+        * **property2** (*prop_type*) - (property2_default) Property 2 description. Values: value1, value2, value3.
+        * **property3** (*dic*) - (None) Property 3 description.
+            * **parameter1** (*param_type*) - (parameter1_default) Parameter 1 description. Values: value1, value2, value3.
 ```
 
 ### Arguments
