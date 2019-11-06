@@ -132,6 +132,6 @@ If there are values they must be a list preceded by the **Values:** expression.
 
 ## Credits
 
-Genís Bayarri, Pau Andrio, Josep Lluis Gelpí.
+Genís Bayarri, Pau Andrio, Adam Hospital, Josep Lluis Gelpí.
 
 Molecular Modeling and Bioinformatics Group. IRB Barcelona.
