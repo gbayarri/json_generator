@@ -1,10 +1,12 @@
-import os
 import glob
 import argparse
+import re
+import json
 from importlib import import_module
 from difflib import SequenceMatcher
 from ast import literal_eval
-import re
+from pathlib import Path, PurePath
+from os import walk
 
 regex_default = '\((\"*([a-zA-Z0-9_\-\^]*|\-*\d*\.*\d*)\"*)\)'
 regex_default_array = '\((\[.*?\])\)'
@@ -14,16 +16,26 @@ regex_type = '\(\*(.*?)\*\)'
 
 class JSONSchemaGenerator():
 
-    def __init__(self, input_package, **kwargs):
-       self.input_package = input_package
-       # TODO!!! GET output_path WITH MODULE FOLDER FOR SAVING JSON FILES
+    def __init__(self, input_package, output_path, **kwargs):
+        self.input_package = input_package
+
+        # check if putput_path exists
+        if not Path(output_path).exists():
+            raise SystemExit('Unexisting output path')
+
+        # check if output_path has correct structure
+        if (not input_package in output_path) or (not 'json_schemas' in output_path):
+            raise SystemExit('Incorrect output path. The structure must be: path/biobb_package/biobb_package/json_schemas')
+
+        self.output_path = output_path
+       
 
     def similar_string(self, a, b):
         """ check similarity between two strings """
         return SequenceMatcher(None, a, b).ratio()
 
     def getType(self, type):
-
+        """ return JSON friendly type """
         if type == 'str': return 'string'
         if type == 'int': return 'number'
         if type == 'float': return 'float'
@@ -33,36 +45,38 @@ class JSONSchemaGenerator():
         return type 
 
     def getDefault(self, default, i):
-
-        # take second from the tuple (because of regex groups!)
+        """ return defaults """ 
+        
         if(i == 0): return literal_eval(default)
         else: val = default[i]
 
         if val == 'True': return True
         if val == 'False': return False
         if val == 'None': return None
-        if val.isdigit(): 
+        if val.lstrip('-+').isdigit(): 
             return int(val)
         if re.match(regex_float, val) is not None:
             return float(val)
-        # TODO: fix for arrays: ["Potential"]
+
         if isinstance(val, str): return val.strip('\"')
         
         return val
 
 
-    def parseDocs(self, doclines):
+    def parseDocs(self, doclines, module):
+        """ parse python docs to object / JSON format """
 
         # get title
         title = doclines[0]
         # parse documentation
         args = False
         required = []
-        json_schema = {
+        object_schema = {
             "$schema": "http://json-schema.org/draft-07/schema#",
-            "$id": "http://bioexcel.eu/biobb_analysis/json_schemas/0.1/cluster",
+            "$id": "http://bioexcel.eu/" + self.input_package + "/json_schemas/1.0/" + module,
             "title": title,
             "type": "object",
+            "required": [],
             "properties": {}
         }
         properties = {}
@@ -89,12 +103,12 @@ class JSONSchemaGenerator():
 
                         chunks4 = chunks3[1].split('Accepted formats:')
 
-                        #if 'Accepted formats:' in chunks3[1]: chunks4 = chunks3[1].split('Accepted formats:')
-
                         # check if property has "Accepted formats:"
                         if len(chunks4) > 1: 
 
-                            values = chunks4[1].replace(' ','').replace('.','').split(',')
+                            values = chunks4[1].replace('.','').split(',')
+                            values = [item.strip() for item in values]
+                            values = ['.*\.{0}$'.format(item) for item in values]
 
                             p = {
                                 "type": self.getType(chunks2[0].strip()),
@@ -130,7 +144,8 @@ class JSONSchemaGenerator():
 
                     if len(chunks5) > 1: 
 
-                        values = chunks5[1].replace(' ','').replace('.','').split(',')
+                        values = chunks5[1].replace('.','').split(',')
+                        values = [item.strip() for item in values]
 
                         p = {
                             "type": self.getType(re.findall(regex_type, row)[0]),
@@ -168,7 +183,8 @@ class JSONSchemaGenerator():
 
                     if len(chunks6) > 1: 
 
-                        values = chunks6[1].replace(' ','').replace('.','').split(',')
+                        values = chunks6[1].replace('.','').split(',')
+                        values = [item.strip() for item in values]
 
                         p = {
                             "type": self.getType(re.findall(regex_type, row)[0]),
@@ -187,22 +203,52 @@ class JSONSchemaGenerator():
 
                     properties["properties"]["properties"][prop_level1]["parameters"][prop_level2] = p
 
-        json_schema["required"] = required
-        json_schema["properties"] = properties
+        object_schema["required"] = required
+        object_schema["properties"] = properties
 
-        json_schema["additionalProperties"] = False
+        object_schema["additionalProperties"] = False
 
-        print(json_schema)
+        return object_schema
+
+    def cleanOutputPath(self):
+        """ removes all JSON files from the output path (except the biobb_package.json file) """
+
+        # get all files in json_schemas folder
+        files = []
+        for (dirpath, dirnames, filenames) in walk(self.output_path):
+            files.extend(filenames)
+            break
+
+        # remove biobb_package.json file from array of files
+        if(self.input_package + '.json' in files): files.remove(self.input_package + '.json')
+
+        # remove files from array of files
+        for f in files:
+            path = PurePath(self.output_path).joinpath(f)
+            Path(path).unlink()
+
+    def saveJSONFile(self, module, object_schema):
+        """ save JSON file for each module """
+
+        path = PurePath(self.output_path).joinpath(module + '.json')
+
+        with open(path, 'w') as file:
+            json.dump(object_schema, file, indent=4)
+
+        print(str(path) + " file saved")
 
     def launch(self):
         """ launch function for JSONSchemaGenerator """
+
         # import package
         packages = import_module(self.input_package)
+
+        # remove old JSON files
+        self.cleanOutputPath()
 
         for package in packages.__all__:
             # for every package import all modules
             modules = import_module(self.input_package + '.' + package)
-            #print(package + ": " + ', '.join(modules.__all__))
             for module in modules.__all__:
                 # import single module
                 mod = import_module(self.input_package + '.' + package + '.' + module)
@@ -222,28 +268,22 @@ class JSONSchemaGenerator():
 
                 # get class documentation
                 klass = getattr(mod, sel_class)
-                print(klass.__doc__)
                 doclines = klass.__doc__.splitlines()
 
-                self.parseDocs(doclines)
-                
+                object_schema = self.parseDocs(doclines, module)
 
-                ##############
-                #break
-                ##############
+                self.saveJSONFile(module, object_schema)            
 
-            ##############
-            #break
-            ##############
-        
 
 def main():
-    parser = argparse.ArgumentParser(description="Creates json_schemas for given Biobb package.", formatter_class=lambda prog: argparse.RawTextHelpFormatter(prog, width=99999))
-    parser.add_argument('--package', required=False, help='Biobb package to be parsed')
+    parser = argparse.ArgumentParser(description="Creates json_schemas for given BioBB package.", formatter_class=lambda prog: argparse.RawTextHelpFormatter(prog, width=99999))
+    required_args = parser.add_argument_group('required arguments')
+    required_args.add_argument('--package', '-p', required=True, help='BioBB package to be parsed.')
+    required_args.add_argument('--output', '-o', required=True, help='Output path to the json_schemas folder in given BioBB package.')
 
     args = parser.parse_args()
 
-    JSONSchemaGenerator(input_package=args.package).launch()
+    JSONSchemaGenerator(input_package=args.package, output_path=args.output).launch()
 
 
 if __name__ == '__main__':
