@@ -110,7 +110,7 @@ The *property name* must be a list item in markdown bold (between double asteris
 
 The *property type* must be between parenthesis. Property types: *str* (string), *dic* (dictionary), *int* (integer), *float*, *bool* (boolean).
 
-The *property default* must be between parenthesis.
+The *property default* must be between parenthesis. If it's a text it's highly recommendable to put it between double quotes instead of single ones.
 
 If there are values they must be a list preceded by the **Values:** expression.
 
@@ -126,7 +126,7 @@ The *parameter name* must be a list item in markdown bold (between double asteri
 
 The *parameter type* must be between parenthesis. Parameter types: *str* (string), *dic* (dictionary), *int* (integer), *float*, *bool* (boolean).
 
-The *parameter default* must be between parenthesis.
+The *parameter default* must be between parenthesis. If it's a text it's highly recommendable to put it between double quotes instead of single ones.
 
 If there are values they must be a list preceded by the **Values:** expression.
 

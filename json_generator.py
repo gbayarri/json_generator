@@ -8,7 +8,7 @@ from ast import literal_eval
 from pathlib import Path, PurePath
 from os import walk
 
-regex_default = '\((\"*([a-zA-Z0-9_\-\^]*|\-*\d*\.*\d*)\"*)\)'
+regex_default = '\((\"*([a-zA-Z0-9_\-\^\:\.\/\']*|\-*\d*\.*\d*)\"*)\)'
 regex_default_array = '\((\[.*?\])\)'
 regex_float = '\-*\d*\.\d*'
 regex_prop_name = '\*\*(.*?)\*\*'
