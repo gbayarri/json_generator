@@ -76,7 +76,7 @@ Description of the module.
 
 Args:
     arg_name1 (arg_type): Description for argument 1. Accepted formats: format1, format2, format3.
-    arg_name2 (arg_type)[Optional]: Description for argument 2. Accepted formats: format1, format2.
+    arg_name2 (arg_type) (Optional): Description for argument 2. Accepted formats: format1, format2.
     properties (dic):
         * **property1** (*prop_type*) - (property1_default) Property 1 description.
         * **property2** (*prop_type*) - (property2_default) Property 2 description. Values: value1, value2, value3.
@@ -89,12 +89,12 @@ Args:
 The arguments must have the next format:
 
 ```Markdown
-arg_name (arg_type)[Optional]: Description. Accepted formats: format1, format2, format3.
+arg_name (arg_type) (Optional): Description. Accepted formats: format1, format2, format3.
 ```
 
 The *argument type* must be between parenthesis. Argument types: *str* (string), *dic* (dictionary).
 
-If the argument is optional, the **[Optional]** expression must be right next the *argument type*.
+If the argument is optional, the **(Optional)** expression must be right next the *argument type* separated by a single space.
 
 If there are formats they must be a list preceded by the **Accepted formats:** expression.
 

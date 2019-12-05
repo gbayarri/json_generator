@@ -92,14 +92,14 @@ class JSONSchemaGenerator():
                     # get required array
                     chunks1 = row.split(' (')
                     prop_id = chunks1[0].strip()
-                    if('properties' not in chunks1[0] and '[Optional]' not in row): required.append(prop_id)
+                    if('properties' not in chunks1[0] and '(Optional)' not in row): required.append(prop_id)
 
                     # get I/O properties
                     if 'properties' not in chunks1[0]:
 
                         chunks2 = chunks1[1].split(')')
-                        if '[Optional]' not in row: chunks3 = row.split('):')
-                        else: chunks3 = row.split(')[Optional]:')
+                        if '(Optional)' not in row: chunks3 = row.split('):')
+                        else: chunks3 = row.split(') (Optional):')
 
                         chunks4 = chunks3[1].split('Accepted formats:')
 
