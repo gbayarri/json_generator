@@ -8,7 +8,7 @@ from ast import literal_eval
 from pathlib import Path, PurePath
 from os import walk
 
-regex_default = '\((\"*([a-zA-Z0-9_\-\^\:\.\/\']*|\-*\d*\.*\d*)\"*)\)'
+regex_default = '\((\"*([a-zA-Z0-9_ \-\^\:\.\/\']*|\-*\d*\.*\d*)\"*)\)'
 regex_default_array = '\((\[.*?\])\)'
 regex_float = '\-*\d*\.\d*'
 regex_prop_name = '\*\*(.*?)\*\*'
@@ -135,6 +135,8 @@ class JSONSchemaGenerator():
 
                     chunks5 = row.split('Values:')
 
+                    
+
                     if '["' and '"]' in row: 
                         regex_def = regex_default_array
                         index_def = 0
@@ -155,7 +157,7 @@ class JSONSchemaGenerator():
                             }
 
                     else:
-                        
+
                         p = {
                             "type": self.getType(re.findall(regex_type, row)[0]),
                             "default": self.getDefault(re.findall(regex_def, row)[0], index_def),
