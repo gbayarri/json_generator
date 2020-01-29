@@ -88,7 +88,7 @@ Args:
 
 The arguments must have the next format:
 
-```Markdown
+```rst
 arg_name (arg_type) (Optional): Description. File type: input / output. `Sample file <url_to_sample_file1>`_. Accepted formats: format1, format2, format3.
 ```
 
@@ -113,7 +113,7 @@ If there are formats they must be a list preceded by the *Accepted formats:* exp
 
 The properties must have the next format:
 
-```Markdown
+```rst
 * **property** (*prop_type*) - (property_default) Property description. Values: value1, value2, value3.
 ```
 
@@ -129,7 +129,7 @@ If there are values they must be a list preceded by the **Values:** expression.
 
 The parameters must have the next format:
 
-```Markdown
+```rst
 * **parameter** (*param_type*) - (parameter_default) Parameter description. Values: value1, value2, value3.
 ```
 
