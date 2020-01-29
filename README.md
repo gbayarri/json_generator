@@ -69,7 +69,7 @@ The *json_schemas* folder must exist before executing the script. The file *biob
 
 ## Docs specifications
 
-All the docs must be written in correct [google string dockstring format](https://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_google.html) and they must be properly indented. Example of documentation:
+All the docs must be written in correct [Google Style Python Docstrings](https://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_google.html) format and they must be properly indented. Example of documentation:
 
 ```rst
 Description of the module.
