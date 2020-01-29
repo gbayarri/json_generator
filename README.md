@@ -102,8 +102,10 @@ If the argument is optional, the *(Optional)* expression must be right next the 
 
 *Sample file* is a link to a sample file for this argument. It's recommended to put the file used for unitest integrated in the same repository:
 
-	* **biobb_package/biobb_package/test/data/block/input_file**: for input files.
-	* **biobb_package/biobb_package/test/reference/block/reference_file**: for output files.
+* **biobb_package/biobb_package/test/data/block/input_file**: for input files.
+* **biobb_package/biobb_package/test/reference/block/reference_file**: for output files.
+
+The format of the *Sample file* link must be in **reStructuredText** (RST) format: ``Sample file <url_to_sample_file>``_
 
 If there are formats they must be a list preceded by the *Accepted formats:* expression.
 
