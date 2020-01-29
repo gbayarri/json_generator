@@ -75,8 +75,8 @@ All the docs must be written in correct markdown language and they must be prope
 Description of the module.
 
 Args:
-    arg_name1 (arg_type): Description for argument 1. Accepted formats: format1, format2, format3.
-    arg_name2 (arg_type) (Optional): Description for argument 2. Accepted formats: format1, format2.
+    arg_name1 (arg_type): Description for argument 1. File type: input / output. `Sample file <url_to_sample_file1>`_. Accepted formats: format1, format2, format3. 
+    arg_name2 (arg_type) (Optional): Description for argument 2. File type: input / output. `Sample file <url_to_sample_file2>`_. Accepted formats: format1, format2.
     properties (dic):
         * **property1** (*prop_type*) - (property1_default) Property 1 description.
         * **property2** (*prop_type*) - (property2_default) Property 2 description. Values: value1, value2, value3.
@@ -89,14 +89,23 @@ Args:
 The arguments must have the next format:
 
 ```Markdown
-arg_name (arg_type) (Optional): Description. Accepted formats: format1, format2, format3.
+arg_name (arg_type) (Optional): Description. File type: input / output. `Sample file <url_to_sample_file1>`_. Accepted formats: format1, format2, format3.
 ```
 
 The *argument type* must be between parenthesis. Argument types: *str* (string), *dic* (dictionary).
 
-If the argument is optional, the **(Optional)** expression must be right next the *argument type* separated by a single space.
+If the argument is optional, the *(Optional)* expression must be right next the *argument type* separated by a single space.
 
-If there are formats they must be a list preceded by the **Accepted formats:** expression.
+*Description* is a string descriving the functionality of the argument.
+
+*File type* must be **input** or **output**. Although it's highly recommended to name the input files as *input_something* and the output files as *output_something*, with this parameter we ensure which type the file is.
+
+*Sample file* is a link to a sample file for this argument. It's recommended to put the file used for unitest integrated in the same repository:
+
+	* **biobb_package/biobb_package/test/data/block/input_file**: for input files.
+	* **biobb_package/biobb_package/test/reference/block/reference_file**: for output files.
+
+If there are formats they must be a list preceded by the *Accepted formats:* expression.
 
 ### Properties
 
