@@ -101,6 +101,14 @@ class JSONSchemaGenerator():
                         if '(Optional)' not in row: chunks3 = row.split('):')
                         else: chunks3 = row.split(') (Optional):')
 
+                        #chunks3[1] contains description, file type and accepted formats
+
+                        if 'File type:' in chunks3[1]: filetype = re.search('(?<=File type:\s)(\w+)', chunks3[1]).group(1)
+                        else: filetype = None
+
+                        if 'Sample file' in chunks3[1]: sample = re.search('<(.*)>', chunks3[1]).group(1)
+                        else: sample = None
+
                         chunks4 = chunks3[1].split('Accepted formats:')
 
                         # check if property has "Accepted formats:"
@@ -112,7 +120,10 @@ class JSONSchemaGenerator():
 
                             p = {
                                 "type": self.getType(chunks2[0].strip()),
-                                "description": chunks4[0].strip(),
+                                #"description": chunks4[0].strip(),
+                                "description": re.search('^(.*?)(?=\.)', chunks3[1]).group(1).strip(),
+                                "filetype": filetype,
+                                "sample": sample,
                                 "enum": values
                                 }
 
@@ -120,7 +131,10 @@ class JSONSchemaGenerator():
 
                             p = {
                                 "type": self.getType(chunks2[0].strip()),
-                                "description": chunks3[1].strip()
+                                #"description": chunks3[1].strip(),
+                                "description": re.search('^(.*?)(?=\.)', chunks3[1]).group(1).strip(),
+                                "filetype": filetype,
+                                "sample": sample
                                 }
 
                         properties[prop_id] = p
