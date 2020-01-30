@@ -2,6 +2,7 @@ import glob
 import argparse
 import re
 import json
+import yaml
 from importlib import import_module
 from difflib import SequenceMatcher
 from ast import literal_eval
@@ -24,10 +25,15 @@ class JSONSchemaGenerator():
             raise SystemExit('Unexisting output path')
 
         # check if output_path has correct structure
-        if (not input_package in output_path) or (not 'json_schemas' in output_path):
-            raise SystemExit('Incorrect output path. The structure must be: path/biobb_package/biobb_package/json_schemas')
+        if not input_package in output_path:
+            raise SystemExit('Incorrect output path. The structure must be: path/biobb_package/biobb_package')
 
-        self.output_path = output_path
+        self.output_path = PurePath(output_path).joinpath('json_schemas')
+        self.output_path_test = PurePath(output_path).joinpath('test')
+        self.output_path_config = PurePath(output_path).joinpath('test/data/config')
+
+        if not Path(self.output_path).exists():
+            raise SystemExit('Incorrect output path. The structure must be: path/biobb_package/biobb_package')
        
 
     def similar_string(self, a, b):
@@ -227,7 +233,7 @@ class JSONSchemaGenerator():
         return object_schema
 
     def cleanOutputPath(self):
-        """ removes all JSON files from the output path (except the biobb_package.json file) """
+        """ removes all JSON files from the output path (except the biobb_package.json file) and all the config files """
 
         # get all files in json_schemas folder
         files = []
@@ -243,6 +249,17 @@ class JSONSchemaGenerator():
             path = PurePath(self.output_path).joinpath(f)
             Path(path).unlink()
 
+        # get all files in config folder
+        files = []
+        for (dirpath, dirnames, filenames) in walk(self.output_path_config):
+            files.extend(filenames)
+            break
+
+        # remove files from array of files
+        for f in files:
+            path = PurePath(self.output_path_config).joinpath(f)
+            Path(path).unlink()
+
     def saveJSONFile(self, module, object_schema):
         """ save JSON file for each module """
 
@@ -250,6 +267,18 @@ class JSONSchemaGenerator():
 
         with open(path, 'w') as file:
             json.dump(object_schema, file, indent=4)
+
+        print(str(path) + " file saved")
+
+    def saveConfigJSONFile(self, properties, module, ):
+        """ save config JSON file for each module """
+
+        conf_json = {
+            'properties': properties
+        }
+        path = PurePath(self.output_path_config).joinpath('config_'+ module + '.json')
+        with open(path, 'w') as file:
+            json.dump(conf_json, file, indent=4)
 
         print(str(path) + " file saved")
 
@@ -262,10 +291,29 @@ class JSONSchemaGenerator():
         # remove old JSON files
         self.cleanOutputPath()
 
+        # get config properties
+        with open(PurePath(self.output_path_test).joinpath('conf.yml')) as f:
+            try:
+                conf = yaml.safe_load(f)
+            except yaml.YAMLError as exc:
+                print(exc)                
+
+        # get documentation of python files
         for package in packages.__all__:
             # for every package import all modules
             modules = import_module(self.input_package + '.' + package)
             for module in modules.__all__:
+
+                # config files
+                # biobb_analysis hardcoding for bfactor, rms and rmsf
+                mdl = module
+                if(self.input_package == 'biobb_analysis' and not module in conf):
+                    mdl = module + '_first'
+
+                if('properties' in conf[mdl] and conf[mdl]['properties'] is not None): 
+                    self.saveConfigJSONFile(conf[mdl]['properties'], mdl)
+
+                # json schemas
                 # import single module
                 mod = import_module(self.input_package + '.' + package + '.' + module)
 

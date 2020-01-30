@@ -2,6 +2,8 @@
 
 Script for generating BioBB JSON Schemas for every package. Passing the name of the package and the absolute route to it, all the JSON files will be automatically generated from the documentation of every package's module.
 
+Additionally, this script also generates the sample config JSON files for each package's module.
+
 ## Execution steps
 
 ### Step 1: activate environment
@@ -38,6 +40,12 @@ The structure of a biobb package must be:
 		* docs
 		* **json_schemas**
 		* test
+			* data
+			* reference
+				* **config**
+				* block 1
+				* block 2
+			* unitests
 	* .gitignore
 	* Dockerfile
 	* LICENSE
@@ -140,6 +148,10 @@ The *parameter type* must be between parenthesis. Parameter types: *str* (string
 The *parameter default* must be between parenthesis. If it's a text it's highly recommendable to put it between double quotes instead of single ones.
 
 If there are values they must be a list preceded by the **Values:** expression.
+
+## Configuration files
+
+The creation of the configuration files is automatic and the data is taken from the path/to/biobb/package/test/conf.yml file. The script will generate a JSON config file for each module with *properties* defined in its parameters.
 
 ## Credits
 
