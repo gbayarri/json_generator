@@ -30,22 +30,23 @@ python3 json_generator.py --package biobb_package --output path/to/biobb/package
 
 The structure of a biobb package must be:
 
-* biobb_package
-	* biobb_package
+* biobb_package/
+	* biobb_package/
 		* **\_\_init\_\_.py**
-		* block
+		* block/
 			* **\_\_init\_\_.py**
 			* module 1
 			* module 2
-		* docs
-		* **json_schemas**
-		* test
-			* data
-			* reference
-				* **config**
-				* block 1
-				* block 2
-			* unitests
+		* docs/
+		* **json_schemas/**
+		* test/
+			* data/
+			* reference/
+				* **config/**
+				* block 1/
+				* block 2/
+			* unitests/
+			* conf.yml
 	* .gitignore
 	* Dockerfile
 	* LICENSE
