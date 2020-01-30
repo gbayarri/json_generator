@@ -76,6 +76,10 @@ In the *\_\_all\_\_* list we have to put all the modules for which we want to ge
 
 The *json_schemas* folder must exist before executing the script. The file *biobb_package.json* won't be affected by the script's execution.
 
+### config folder
+
+The *config* folder must exist before executing the script. All the JSON config files will be saved in this folder.
+
 ## Docs specifications
 
 All the docs must be written in correct [Google Style Python Docstrings](https://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_google.html) format and they must be properly indented. Example of documentation:
