@@ -19,11 +19,11 @@ conda activate biobb_env
 Run the python script passing the BioBB package to be parsed and the folder where the JSON files will be saved:
 
 ```Shell
-python3 json_generator.py -p biobb_package -o path/to/biobb/package
+python3 json_generator.py -p biobb_package -o path/to/biobb_package/biobb_package
 ```
 
 ```Shell
-python3 json_generator.py --package biobb_package --output path/to/biobb/package
+python3 json_generator.py --package biobb_package --output path/to/biobb_package/biobb_package
 ```
 
 ## Files structure
