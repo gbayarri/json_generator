@@ -340,10 +340,12 @@ class JSONSchemaGenerator():
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Creates json_schemas for given BioBB package.", formatter_class=lambda prog: argparse.RawTextHelpFormatter(prog, width=99999))
+    parser = argparse.ArgumentParser(description="Creates json_schemas for given BioBB package.", 
+                                     formatter_class=lambda prog: argparse.RawTextHelpFormatter(prog, width=99999),
+                                     epilog='''Examples: \njson_generator.py -p biobb_package -o path/to/biobb_package/biobb_package\njson_generator.py --package biobb_package --output path/to/biobb_package/biobb_package''')
     required_args = parser.add_argument_group('required arguments')
     required_args.add_argument('--package', '-p', required=True, help='BioBB package to be parsed.')
-    required_args.add_argument('--output', '-o', required=True, help='Output path to the json_schemas folder in given BioBB package.')
+    required_args.add_argument('--output', '-o', required=True, help='Output path to the biobb_package/biobb_package folder.')
 
     args = parser.parse_args()
 
