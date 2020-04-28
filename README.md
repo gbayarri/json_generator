@@ -158,6 +158,14 @@ If there are values they must be a list preceded by the **Values:** expression.
 
 The creation of the configuration files is automatic and the data is taken from the path/to/biobb/package/test/conf.yml file. The script will generate a JSON config file for each module with *properties* defined in its parameters.
 
+## Execution order
+
+1st -> json_generator.py
+
+2nd -> configs_generator.py
+
+3rd -> command_line_doc_generator.py
+
 ## Credits
 
 Genís Bayarri, Pau Andrio, Adam Hospital, Josep Lluis Gelpí.
