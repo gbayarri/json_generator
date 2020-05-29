@@ -166,6 +166,8 @@ The creation of the configuration files is automatic and the data is taken from 
 
 3rd -> command_line_doc_generator.py
 
+4th -> changelog_generator.py
+
 ## Credits
 
 Genís Bayarri, Pau Andrio, Adam Hospital, Josep Lluis Gelpí.

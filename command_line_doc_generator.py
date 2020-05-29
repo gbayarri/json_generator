@@ -28,6 +28,7 @@ def main():
     parser = argparse.ArgumentParser(description="Creates config_biobb.json and config_biobb.yml files.",
                                      formatter_class=lambda prog: argparse.RawTextHelpFormatter(prog, width=99999),
                                      epilog="Examples: \nconfigs_generator.py -i path/to/testconffile/conf.yml -o path/to/outputdir")
+
     required_args = parser.add_argument_group('required arguments')
     required_args.add_argument('--json_schemas_folder', '-j', required=True,
                                help='json_schemas folder in biobb_example/biobb_example')
@@ -38,6 +39,7 @@ def main():
     required_args.add_argument('--output', '-o', required=True, help='Output md file')
 
     args = parser.parse_args()
+
     biobb_name = args.biobb_name
     biobb_title = f"BioBB {biobb_name.split('_')[1].upper()}"
     config_url = f"https://github.com/bioexcel/{biobb_name}/blob/master/{biobb_name}/test/data/config/"
