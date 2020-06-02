@@ -20,7 +20,7 @@ class JSONSchemaGenerator():
     def __init__(self, input_package, output_path, **kwargs):
         self.input_package = input_package
 
-        # check if putput_path exists
+        # check if output_path exists
         if not Path(output_path).exists():
             raise SystemExit('Unexisting output path')
 
