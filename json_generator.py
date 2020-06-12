@@ -273,6 +273,10 @@ class JSONSchemaGenerator():
     def saveConfigJSONFile(self, properties, module, ):
         """ save config JSON file for each module """
 
+        # pmx hardcoding
+        if module.endswith('_docker'):
+            module = module.replace('_docker', '')
+
         conf_json = {
             'properties': properties
         }
@@ -309,6 +313,10 @@ class JSONSchemaGenerator():
                 mdl = module
                 if(self.input_package == 'biobb_analysis' and not module in conf):
                     mdl = module + '_first'
+
+                # biobb_analysis hardcoding forcing to take docker cofiguration
+                if(self.input_package == 'biobb_pmx'):
+                    mdl = module + '_docker'
 
                 if('properties' in conf[mdl] and conf[mdl]['properties'] is not None): 
                     self.saveConfigJSONFile(conf[mdl]['properties'], mdl)
