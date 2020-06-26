@@ -338,13 +338,23 @@ class JSONSchemaGenerator():
                             sel_class = item
                             similarity = s
 
+                # exceptions:
+                if sel_class == "KMeans" and module == "k_means": 
+                    sel_class = "KMeansClustering"
+                if sel_class == "KMeans" and module == "dbscan": 
+                    sel_class = "DBSCANClustering"
+                if sel_class == "AgglomerativeClustering": 
+                    sel_class = "AgglClustering"
+                if sel_class == "SpectralClustering": 
+                    sel_class = "SpecClustering"
+
                 # get class documentation
                 klass = getattr(mod, sel_class)
                 doclines = klass.__doc__.splitlines()
 
                 object_schema = self.parseDocs(doclines, module)
 
-                self.saveJSONFile(module, object_schema)            
+                self.saveJSONFile(module, object_schema)
 
 
 def main():
